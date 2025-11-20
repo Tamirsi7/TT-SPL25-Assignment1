@@ -6,6 +6,22 @@ Playlist::Playlist(const std::string& name)
     : head(nullptr), playlist_name(name), track_count(0) {
     std::cout << "Created playlist: " << name << std::endl;
 }
+
+Playlist::Playlist(const Playlist& other)
+: head(nullptr), playlist_name(other.playlist_name) , track_count(other.track_count){
+    if(other.head!=nullptr){
+        head = new PlaylistNode(other.head->track->clone()); //initializing new node with 1st track from other and setting him to be head
+        PlaylistNode* other_next = other.head->next; //pointer to other's next field
+        PlaylistNode* curr = head;
+        while(other_next){ //loop over other nodes in order to deep copy the nodes
+            curr->next = new PlaylistNode(other_next->track->clone());
+            other_next = other_next->next;
+            curr = curr->next;
+        }
+    }
+}
+
+
 // TODO: Fix memory leaks!
 // Students must fix this in Phase 1
 Playlist::~Playlist() {

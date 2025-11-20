@@ -35,6 +35,9 @@ public:
      */
     Playlist(const std::string& name="");
 
+    //adding copy constructor to support rule of 3
+    Playlist(const Playlist& other);
+
     /**
      * Destructor
      */
