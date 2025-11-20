@@ -38,6 +38,9 @@ public:
     //adding copy constructor to support rule of 3
     Playlist(const Playlist& other);
 
+    //adding copy assignment operator
+    Playlist& operator=(const Playlist& other);
+
     /**
      * Destructor
      */
