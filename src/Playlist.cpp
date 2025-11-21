@@ -13,12 +13,12 @@ Playlist::Playlist(const Playlist &other)
 {
     if (other.head != nullptr)
     {
-        head = new PlaylistNode(other.head->track->clone()); // initializing new node with 1st track from other and setting him to be head
+        head = new PlaylistNode(other.head->track->clone().get()); // initializing new node with 1st track from other and setting him to be head
         PlaylistNode *other_next = other.head->next;         // pointer to other's next field
         PlaylistNode *curr = head;
         while (other_next)
         { // loop over other nodes in order to deep copy the nodes
-            curr->next = new PlaylistNode(other_next->track->clone());
+            curr->next = new PlaylistNode(other_next->track->clone().get());
             other_next = other_next->next;
             curr = curr->next;
         }
@@ -46,12 +46,12 @@ Playlist &Playlist::operator=(const Playlist &other)
 
     if (other.head != nullptr)
     {
-        head = new PlaylistNode(other.head->track->clone()); // initializing new node with 1st track from other and setting him to be head
+        head = new PlaylistNode(other.head->track->clone().get()); // initializing new node with 1st track from other and setting him to be head
         PlaylistNode *other_next = other.head->next;         // pointer to other's next field
         PlaylistNode *curr = head;
         while (other_next)
         { // loop over other nodes in order to deep copy the nodes
-            curr->next = new PlaylistNode(other_next->track->clone());
+            curr->next = new PlaylistNode(other_next->track->clone().get());
             other_next = other_next->next;
             curr = curr->next;
         }
@@ -119,7 +119,8 @@ void Playlist::remove_track(const std::string &title)
         {
             head = current->next;
         }
-
+        delete current->track;
+        delete current;
         track_count--;
         std::cout << "Removed '" << title << "' from playlist" << std::endl;
     }

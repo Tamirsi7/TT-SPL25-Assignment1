@@ -54,7 +54,7 @@ AudioTrack::AudioTrack(const AudioTrack &other)
 #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
 #endif
-    if (other.waveform_data > 0 && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
+    if (other.waveform_data !=nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
     {
         waveform_data = new double[other.waveform_size];
         for (int i = 0; i < other.waveform_size; i++)
@@ -82,7 +82,7 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 
     delete[] waveform_data;
 
-    if (other.waveform_data > 0 && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
+    if (other.waveform_data != nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
     {
         waveform_data = new double[other.waveform_size];
         for (int i = 0; i < other.waveform_size; i++)
