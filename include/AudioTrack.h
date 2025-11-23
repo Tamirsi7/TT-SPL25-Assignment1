@@ -107,4 +107,7 @@ public:
     int get_bpm() const { return bpm; }
     int get_duration() const { return duration_seconds; }
     std::vector<std::string> get_artists() const { return artists; }
+
+    //adding set_bpm method:
+    virtual void set_bpm(int new_bpm){}
 };
