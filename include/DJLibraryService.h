@@ -20,6 +20,10 @@ public:
     // adding distructor:
     ~DJLibraryService();
 
+    // due to added instructor - adding deleted methods: copy constructor and assingment operator, in order to implement rule of 3
+    DJLibraryService(const DJLibraryService &) = delete;
+    DJLibraryService &operator=(const DJLibraryService &) = delete;
+
     /**
      * @brief Build the track library from parsed config data
      * @param library_tracks Vector of track info from config

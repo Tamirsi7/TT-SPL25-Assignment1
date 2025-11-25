@@ -127,6 +127,7 @@ bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
         stats.errors++;
         return false;
     }
+    return false;
 }
 
 /**
@@ -192,8 +193,10 @@ void DJSession::simulate_dj_performance()
             {
                 std::cout << "\n–- Processing: " << curr_track << " –-";
                 stats.tracks_processed++;
-                load_track_to_controller(curr_track); // the method updates statistics inside
-                load_track_to_mixer_deck(curr_track); // the method updates statistics insid
+                load_track_to_controller(curr_track);    // the method updates statistics inside
+                controller_service.displayCacheStatus(); // lotem sent an update, demanding status prints
+                load_track_to_mixer_deck(curr_track);    // the method updates statistics insid
+                mixing_service.displayDeckStatus();      // lotem sent an update, demanding status prints
             }
             print_session_summary();
             stats.tracks_processed = 0;

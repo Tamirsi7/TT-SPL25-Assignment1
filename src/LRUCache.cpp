@@ -33,17 +33,17 @@ bool LRUCache::put(PointerWrapper<AudioTrack> track)
         slots[curr_slot].access(++access_counter);
         return false;
     }
-    PointerWrapper<AudioTrack> new_track = track.get()->clone();                // Maybe we are doing double clone, which is unesseccery due to clone in DJControllerServiece 
+    //PointerWrapper<AudioTrack> new_track = track.get()->clone();                // Maybe we are doing double clone, which is unesseccery due to clone in DJControllerServiece 
     if (findEmptySlot() == max_size)
     {
         evictLRU();
         size_t empt = findEmptySlot();
-        slots[empt].store(std::move(new_track), ++access_counter);
+        slots[empt].store(std::move(track), ++access_counter);
         return true;
     }
     else{
         size_t empt = findEmptySlot();
-        slots[empt].store(std::move(new_track),++access_counter);
+        slots[empt].store(std::move(track),++access_counter);
     }
     return false;
     }
