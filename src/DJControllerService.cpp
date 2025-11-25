@@ -20,7 +20,7 @@ int DJControllerService::loadTrackToCache(AudioTrack &track)
     AudioTrack *raw_pointer = track_clone.release();
     if (raw_pointer == nullptr)
     {
-        std::cout << "[ERROR] Track:" << track.get_title() << "failed to clone";
+        std::cout << "[ERROR] Track:" << track.get_title() << "failed to clone \n";
         return 0;
     }
     raw_pointer->load();

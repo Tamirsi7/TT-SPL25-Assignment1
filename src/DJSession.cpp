@@ -70,11 +70,11 @@ int DJSession::load_track_to_controller(const std::string &track_name)
     AudioTrack *loading_track = library_service.findTrack(track_name);
     if (loading_track == nullptr)
     {
-        std::cout << "[ERROR] Track: '" << track_name << "' not found in library";
+        std::cout << "[ERROR] Track: '" << track_name << "' not found in library \n";
         stats.errors++;
         return 0;
     }
-    std::cout << "[System] Loading track: '" << track_name << "' to controller...";
+    std::cout << "[System] Loading track: '" << track_name << "' to controller... \n";
     int loading_status = controller_service.loadTrackToCache(*loading_track); //* on a pointer makes it a referance
     if (loading_status == 1)
     {
@@ -104,7 +104,7 @@ bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
     AudioTrack *returned_track = controller_service.getTrackFromCache(track_title);
     if (returned_track == nullptr)
     {
-        std::cout << "[ERROR] Track: '" << track_title << "' not found in cache";
+        std::cout << "[ERROR] Track: '" << track_title << "' not found in cache \n";
         stats.errors++;
         return false;
     }
@@ -123,7 +123,7 @@ bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
     }
     if (load_to_track_status == -1)
     {
-        std::cout << "[ERROR] failed to load track: '" << track_title << "' to deck";
+        std::cout << "[ERROR] failed to load track: '" << track_title << "' to deck \n";
         stats.errors++;
         return false;
     }
@@ -191,7 +191,7 @@ void DJSession::simulate_dj_performance()
             }
             for (std::string curr_track : track_titles)
             {
-                std::cout << "\n–- Processing: " << curr_track << " –-";
+                std::cout << "\n–- Processing: " << curr_track << " –- \n";
                 stats.tracks_processed++;
                 load_track_to_controller(curr_track);    // the method updates statistics inside
                 controller_service.displayCacheStatus(); // lotem sent an update, demanding status prints
@@ -210,7 +210,7 @@ void DJSession::simulate_dj_performance()
         }
         if (play_all)
         {
-            std::cout << "Session cancelled by user or all playlists played.";
+            std::cout << "Session cancelled by user or all playlists played. \n";
             break;
         }
     }
@@ -272,7 +272,7 @@ std::string DJSession::display_playlist_menu_from_config()
     int selection = -1;
     while (true)
     {
-        std::cout << "\nSelect a playlist (1-" << playlist_names.size() << ", 0 to cancel): ";
+        std::cout << "\nSelect a playlist (1-" << playlist_names.size() << ", 0 to cancel):\n ";
         std::string input;
 
         if (!std::getline(std::cin, input))

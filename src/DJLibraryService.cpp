@@ -32,7 +32,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
             counter++;
         }
     }
-    std::cout << "[INFO] Track library built: " << counter << " tracks loaded";
+    std::cout << "[INFO] Track library built: " << counter << " tracks loaded \n";
 }
 
 // adding distructor
@@ -90,20 +90,20 @@ AudioTrack *DJLibraryService::findTrack(const std::string &track_title)
 void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                                                const std::vector<int> &track_indices)
 {
-    std::cout << "[INFO] Loading playlist: " << playlist_name;
+    std::cout << "[INFO] Loading playlist: " << playlist_name<< "\n";
     Playlist *new_playlist = new Playlist(playlist_name);
     int count = 0;
     for (int i = 0; i < track_indices.size(); i++)
     {
         if (track_indices[i] <= 0 || track_indices[i] > library.size())
         {
-            std::cout << "[WARNING] Invalid track index: " << track_indices[i];
+            std::cout << "[WARNING] Invalid track index: " << track_indices[i]<< "\n";
             continue; // skip current index
         }
         AudioTrack *raw_cloned_track = library[track_indices[i] - 1]->clone().release();
         if (raw_cloned_track == nullptr)
         {
-            std::cout << "[ERROR] Track: " << library[track_indices[i]]->get_title() << " failed to clone\n";
+            std::cout << "[ERROR] Track: " << library[track_indices[i]]->get_title() << " failed to clone \n";
             continue;
         }
         raw_cloned_track->load();
@@ -113,7 +113,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
 
         std::cout << "Added '" << raw_cloned_track->get_title() << "' to playlist '" << new_playlist->get_name() << "'\n";
     }
-    std::cout << "[INFO] Playlist loaded: " << new_playlist->get_name() << " (" << count << " tracks)";
+    std::cout << "[INFO] Playlist loaded: " << new_playlist->get_name() << " (" << count << " tracks) \n";
 }
 
 /**
