@@ -20,7 +20,7 @@ bool SessionFileParser::parse_config_file(const std::string& config_path, Sessio
         line_number++;
         line = trim_string(line);
         
-        // Skip empty lines and comments
+        // Skip empty lines and commentsx
         if (line.empty() || is_comment_line(line)) {
             continue;
         }

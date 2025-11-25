@@ -56,7 +56,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
         is_first_track = true;
     }
 
-    std::cout << "[Deck Switch] Target deck : " << target_deck << "\n";
+    std::cout << "[Deck Switch] Target deck: " << target_deck << "\n";
 
     if (decks[target_deck] != nullptr)
     {
@@ -81,7 +81,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 
     if (is_first_track == false)
     {
-        std::cout << "[Unload] Unloading previous deck " << active_deck << decks[active_deck]->get_title() << "\n";
+        std::cout << "[Unload] Unloading previous deck " << active_deck <<" ("<< decks[active_deck]->get_title() <<")"<< "\n";
         delete decks[active_deck];
         decks[active_deck] = nullptr;
     }

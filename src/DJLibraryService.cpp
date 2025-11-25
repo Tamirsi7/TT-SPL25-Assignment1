@@ -38,8 +38,10 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
 // adding distructor
 DJLibraryService::~DJLibraryService()
 {
-    for(int i=0;i<library.size();i++){
-        if(library[i]!=nullptr){
+    for (int i = 0; i < library.size(); i++)
+    {
+        if (library[i] != nullptr)
+        {
             delete library[i];
         }
     }
@@ -90,14 +92,14 @@ AudioTrack *DJLibraryService::findTrack(const std::string &track_title)
 void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                                                const std::vector<int> &track_indices)
 {
-    std::cout << "[INFO] Loading playlist: " << playlist_name<< "\n";
-    Playlist *new_playlist = new Playlist(playlist_name);
+    std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
+    this->playlist = Playlist(playlist_name);
     int count = 0;
     for (int i = 0; i < track_indices.size(); i++)
     {
         if (track_indices[i] <= 0 || track_indices[i] > library.size())
         {
-            std::cout << "[WARNING] Invalid track index: " << track_indices[i]<< "\n";
+            std::cout << "[WARNING] Invalid track index: " << track_indices[i] << "\n";
             continue; // skip current index
         }
         AudioTrack *raw_cloned_track = library[track_indices[i] - 1]->clone().release();
@@ -108,12 +110,12 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
         }
         raw_cloned_track->load();
         raw_cloned_track->analyze_beatgrid();
-        new_playlist->add_track(raw_cloned_track);
+        playlist.add_track(raw_cloned_track);
         count++;
 
-        std::cout << "Added '" << raw_cloned_track->get_title() << "' to playlist '" << new_playlist->get_name() << "'\n";
+     //   std::cout << "Added '" << raw_cloned_track->get_title() << "' to playlist '" << playlist.get_name() << "'\n";
     }
-    std::cout << "[INFO] Playlist loaded: " << new_playlist->get_name() << " (" << count << " tracks) \n";
+    std::cout << "[INFO] Playlist loaded: " << playlist.get_name() << " (" << count << " tracks) \n";
 }
 
 /**

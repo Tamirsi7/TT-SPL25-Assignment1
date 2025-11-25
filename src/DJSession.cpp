@@ -74,7 +74,7 @@ int DJSession::load_track_to_controller(const std::string &track_name)
         stats.errors++;
         return 0;
     }
-    std::cout << "[System] Loading track: '" << track_name << "' to controller... \n";
+    std::cout << "[System] Loading track '" << track_name << "' to controller... \n";
     int loading_status = controller_service.loadTrackToCache(*loading_track); //* on a pointer makes it a referance
     if (loading_status == 1)
     {
