@@ -75,7 +75,7 @@ PointerWrapper<AudioTrack> MP3Track::clone() const
     // deep copying waveform array:
     clone_track->waveform_size = waveform_size;
     clone_track->waveform_data = new double[waveform_size];
-    for (int i = 0; i < waveform_size; i++)
+    for (size_t i = 0; i < waveform_size; i++)
     {
         clone_track->waveform_data[i] = waveform_data[i];
     }

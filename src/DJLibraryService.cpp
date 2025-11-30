@@ -16,7 +16,7 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> &library_tracks)
 {
     int counter = 0;
-    for (int i = 0; i < library_tracks.size(); i++)
+    for (size_t i = 0; i < library_tracks.size(); i++)
     {
         AudioTrack *new_track = nullptr;
         if (library_tracks[i].type == "MP3")
@@ -39,7 +39,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
 // adding distructor
 DJLibraryService::~DJLibraryService()
 {
-    for (int i = 0; i < library.size(); i++)
+    for (size_t i = 0; i < library.size(); i++)
     {
         if (library[i] != nullptr)
         {
@@ -96,9 +96,9 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
     std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
     this->playlist = Playlist(playlist_name);
     int count = 0;
-    for (int i = 0; i < track_indices.size(); i++)
+    for (size_t i = 0; i < track_indices.size(); i++)
     {
-        if (track_indices[i] <= 0 || track_indices[i] > library.size())
+        if (track_indices[i] <= 0 || track_indices[i] > static_cast<int>(library.size()))
         {
             std::cout << "[WARNING] Invalid track index: " << track_indices[i] << "\n";
             continue; // skip current index
@@ -127,7 +127,7 @@ std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
     std::vector<std::string> tracks_names;
     std::vector<AudioTrack *> tracks_from_playlist = playlist.getTracks();
-    for (int i = 0; i < tracks_from_playlist.size(); i++)
+    for (size_t i = 0; i < tracks_from_playlist.size(); i++)
     {
         tracks_names.push_back(tracks_from_playlist[i]->get_title());
     }

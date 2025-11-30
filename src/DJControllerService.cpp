@@ -35,6 +35,7 @@ int DJControllerService::loadTrackToCache(AudioTrack &track)
     {
         return 0;
     }
+return 0;
 }
 
 void DJControllerService::set_cache_size(size_t new_size)

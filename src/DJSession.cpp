@@ -7,18 +7,17 @@
 
 // ========== CONSTRUCTORS & RULE OF 5 ==========
 
-
-DJSession::DJSession(const std::string& name, bool play_all)
+DJSession::DJSession(const std::string &name, bool play_all)
     : session_name(name),
-    library_service(),
-    controller_service(),
-    mixing_service(),
-    config_manager(),
-    session_config(),
-    track_titles(),
-    play_all(play_all),
-    stats()
-      {
+      library_service(),
+      controller_service(),
+      mixing_service(),
+      config_manager(),
+      session_config(),
+      track_titles(),
+      play_all(play_all),
+      stats()
+{
     std::cout << "DJ Session System initialized: " << session_name << std::endl;
 }
 
@@ -191,7 +190,15 @@ void DJSession::simulate_dj_performance()
             }
             current_playlist.push_back(playlist_from_user);
         }
-        for (int i = 0; i < current_playlist.size(); i++)
+        stats.tracks_processed = 0;
+        stats.cache_hits = 0;
+        stats.cache_misses = 0;
+        stats.cache_evictions = 0;
+        stats.deck_loads_a = 0;
+        stats.deck_loads_b = 0;
+        stats.transitions = 0;
+        stats.errors = 0;
+        for (size_t i = 0; i < current_playlist.size(); i++)
         {
             bool load_status = load_playlist(current_playlist[i]);
             if (!load_status)
@@ -208,14 +215,6 @@ void DJSession::simulate_dj_performance()
                 mixing_service.displayDeckStatus();      // lotem sent an update, demanding status prints
             }
             print_session_summary();
-            stats.tracks_processed = 0;
-            stats.cache_hits = 0;
-            stats.cache_misses = 0;
-            stats.cache_evictions = 0;
-            stats.deck_loads_a = 0;
-            stats.deck_loads_b = 0;
-            stats.transitions = 0;
-            stats.errors = 0;
         }
         if (play_all)
         {

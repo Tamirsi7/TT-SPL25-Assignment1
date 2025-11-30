@@ -56,7 +56,7 @@ AudioTrack::AudioTrack(const AudioTrack &other)
     if (other.waveform_data !=nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
     {
         waveform_data = new double[other.waveform_size];
-        for (int i = 0; i < other.waveform_size; i++)
+        for (size_t i = 0; i < other.waveform_size; i++)
         { // deep coping the array
             waveform_data[i] = other.waveform_data[i];
         }
@@ -84,7 +84,7 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
     if (other.waveform_data != nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
     {
         waveform_data = new double[other.waveform_size];
-        for (int i = 0; i < other.waveform_size; i++)
+        for (size_t i = 0; i < other.waveform_size; i++)
         { // deep coping the array
             waveform_data[i] = other.waveform_data[i];
         }

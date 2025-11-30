@@ -126,7 +126,7 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
     {
         return false;
     }
-    return std::abs((track.get()->get_bpm()) - (decks[active_deck]->get_bpm()) <= bpm_tolerance);
+    return std::abs((track.get()->get_bpm()) - (decks[active_deck]->get_bpm())) <= bpm_tolerance;
 }
 
 /**

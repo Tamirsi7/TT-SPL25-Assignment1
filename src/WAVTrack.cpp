@@ -33,7 +33,7 @@ void WAVTrack::analyze_beatgrid()
     // should print "  → Estimated beats: <beats>  → Precision factor: 1.0 (uncompressed audio)"
     double estimated_beats = (duration_seconds / 60.0) * bpm; // maybe change to long long type
     double precision_factor = 1;
-    std::cout << "  → Estimated beats: " << estimated_beats << "  → Precision factpr: 1 (uncompresssed audion)\n";
+    std::cout << "  → Estimated beats: " << estimated_beats << "  → Precision factor: " << precision_factor << " (uncompresssed audion)\n";
 }
 
 double WAVTrack::get_quality_score() const
@@ -72,7 +72,7 @@ PointerWrapper<AudioTrack> WAVTrack::clone() const
     // deep copying waveform array:
     clone_track->waveform_size = waveform_size;
     clone_track->waveform_data = new double[waveform_size];
-    for (int i = 0; i < waveform_size; i++)
+    for (size_t i = 0; i < waveform_size; i++)
     {
         clone_track->waveform_data[i] = waveform_data[i];
     }
