@@ -14,8 +14,8 @@
 class DJLibraryService
 {
 public:
-    DJLibraryService(const Playlist &playlist);
-    DJLibraryService() = default;
+    DJLibraryService(const Playlist& playlist);
+    DJLibraryService(): playlist(), library(){}
 
     // adding distructor:
     ~DJLibraryService();
