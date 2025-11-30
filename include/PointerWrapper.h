@@ -127,7 +127,7 @@ public:
      */
     T *get() const
     {
-        if (ptr == nullptr)
+        if (ptr == nullptr) //checking if we got nullptr, if so - throw runtime error
         {
             throw std::runtime_error("trying to access nullptr");
         }

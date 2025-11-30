@@ -38,7 +38,7 @@ AudioTrack::~AudioTrack()
 #ifdef DEBUG
     std::cout << "AudioTrack destructor called for: " << title << std::endl;
 #endif
-    if (waveform_data != nullptr)
+    if (waveform_data != nullptr) //deleting the array
     {
         delete[] waveform_data;
     }
@@ -56,7 +56,7 @@ AudioTrack::AudioTrack(const AudioTrack &other)
     if (other.waveform_data !=nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
     {
         waveform_data = new double[other.waveform_size];
-        for (size_t i = 0; i < other.waveform_size; i++)
+        for (size_t i = 0; i < other.waveform_size; i++)//looping through waveform in order to deep copy
         { // deep coping the array
             waveform_data[i] = other.waveform_data[i];
         }
@@ -69,16 +69,17 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
 #endif
-    if (this == &other)
+    if (this == &other) 
     {
         return *this;
     }
+    //copying stats
     title = other.title;
     artists = other.artists;
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_size = other.waveform_size;
-
+    //deleting waveform array
     delete[] waveform_data;
 
     if (other.waveform_data != nullptr && other.waveform_size > 0) // making sure that the pointer isn't null, and that the array size isn't 0.
@@ -114,7 +115,8 @@ AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
 #endif
     if (this != &other)
     {
-        delete[] waveform_data;
+        delete[] waveform_data; //deleting the current array
+        //updating stats
         title = other.title;
         artists = other.artists;
         duration_seconds = other.duration_seconds;

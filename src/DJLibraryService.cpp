@@ -16,8 +16,9 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> &library_tracks)
 {
     int counter = 0;
-    for (size_t i = 0; i < library_tracks.size(); i++)
+    for (size_t i = 0; i < library_tracks.size(); i++)//for each track from library tracks:
     {
+        //check if mp3 or wav and create appropriate track type, store raw pointer in library vector
         AudioTrack *new_track = nullptr;
         if (library_tracks[i].type == "MP3")
         {
@@ -33,7 +34,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
             counter++;
         }
     }
-    std::cout << "[INFO] Track library built: " << counter << " tracks loaded\n";
+    std::cout << "[INFO] Track library built: " << counter << " tracks loaded\n"; //log messege
 }
 
 // adding distructor
@@ -87,30 +88,32 @@ Playlist &DJLibraryService::getPlaylist()
  */
 AudioTrack *DJLibraryService::findTrack(const std::string &track_title)
 {
-    return playlist.find_track(track_title);
+    return playlist.find_track(track_title); //using playlist.findtrack method
 }
 
 void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                                                const std::vector<int> &track_indices)
 {
     std::cout << "[INFO] Loading playlist: " << playlist_name << "\n";
-    this->playlist = Playlist(playlist_name);
+    this->playlist = Playlist(playlist_name); //creating playlist with given name
     int count = 0;
-    for (size_t i = 0; i < track_indices.size(); i++)
+    for (size_t i = 0; i < track_indices.size(); i++) //loop through each index in the indices vector:
     {
-        if (track_indices[i] <= 0 || track_indices[i] > static_cast<int>(library.size()))
+        if (track_indices[i] <= 0 || track_indices[i] > static_cast<int>(library.size())) //validating index in bounds
         {
             std::cout << "[WARNING] Invalid track index: " << track_indices[i] << "\n";
             continue; // skip current index
         }
-        AudioTrack *raw_cloned_track = library[track_indices[i] - 1]->clone().release();
-        if (raw_cloned_track == nullptr)
+        AudioTrack *raw_cloned_track = library[track_indices[i] - 1]->clone().release(); //cloning the track polymorphically and unwrap the pointerwrapper
+        if (raw_cloned_track == nullptr)//checking if clone is nullptr and if so logging an error
         {
             std::cout << "[ERROR] Track: " << library[track_indices[i]]->get_title() << " failed to clone\n";
             continue;
         }
+        //calling load and analize beatgrid methods
         raw_cloned_track->load();
         raw_cloned_track->analyze_beatgrid();
+        //adding cloned track to playlist using playlist.add_track()
         playlist.add_track(raw_cloned_track);
         count++;
 
@@ -125,6 +128,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
  */
 std::vector<std::string> DJLibraryService::getTrackTitles() const
 {
+    //looping through playlist tracks and collect titles - then return the vector of titles
     std::vector<std::string> tracks_names;
     std::vector<AudioTrack *> tracks_from_playlist = playlist.getTracks();
     for (size_t i = 0; i < tracks_from_playlist.size(); i++)

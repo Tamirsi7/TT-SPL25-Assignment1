@@ -22,122 +22,123 @@ AudioTrack *LRUCache::get(const std::string &track_id)
  */
 bool LRUCache::put(PointerWrapper<AudioTrack> track)
 {
-    if (track.get() == nullptr)
+    if (track.get() == nullptr) //handling nullptr track by returning immediately
     {
         return false;
     }
     size_t curr_slot = findSlot(track.get()->get_title());
 
-    if (curr_slot != max_size)
+    if (curr_slot != max_size) //if a track with the same title already exist - update its access time to make it most recently used
     {
         slots[curr_slot].access(++access_counter);
         return false;
     }
-    //PointerWrapper<AudioTrack> new_track = track.get()->clone();                // Maybe we are doing double clone, which is unesseccery due to clone in DJControllerServiece 
-    if (findEmptySlot() == max_size)
+    // PointerWrapper<AudioTrack> new_track = track.get()->clone();                // Maybe we are doing double clone, which is unesseccery due to clone in DJControllerServiece
+    if (findEmptySlot() == max_size) //checking if cache is full
     {
-        evictLRU();
-        size_t empt = findEmptySlot();
-        slots[empt].store(std::move(track), ++access_counter);
+        evictLRU(); //making empty slot
+        size_t empt = findEmptySlot(); //finding empty slot
+        slots[empt].store(std::move(track), ++access_counter);//store the new track with the current access_counter value and mark the slot as occupied
         return true;
     }
-    else{
-        size_t empt = findEmptySlot();
-        slots[empt].store(std::move(track),++access_counter);
+    else
+    {
+        size_t empt = findEmptySlot();//finding empty slot
+        slots[empt].store(std::move(track), ++access_counter);//store the new track with the current access_counter value and mark the slot as occupied
     }
     return false;
-    }
+}
 
-    bool LRUCache::evictLRU()
-    {
-        size_t lru = findLRUSlot();
-        if (lru == max_size || !slots[lru].isOccupied())
-            return false;
-        slots[lru].clear();
-        return true;
-    }
+bool LRUCache::evictLRU()
+{
+    size_t lru = findLRUSlot();
+    if (lru == max_size || !slots[lru].isOccupied())
+        return false;
+    slots[lru].clear();
+    return true;
+}
 
-    size_t LRUCache::size() const
-    {
-        size_t count = 0;
-        for (const auto &slot : slots)
-            if (slot.isOccupied())
-                ++count;
-        return count;
-    }
+size_t LRUCache::size() const
+{
+    size_t count = 0;
+    for (const auto &slot : slots)
+        if (slot.isOccupied())
+            ++count;
+    return count;
+}
 
-    void LRUCache::clear()
+void LRUCache::clear()
+{
+    for (auto &slot : slots)
     {
-        for (auto &slot : slots)
+        slot.clear();
+    }
+}
+
+void LRUCache::displayStatus() const
+{
+    std::cout << "[LRUCache] Status: " << size() << "/" << max_size << " slots used\n";
+    for (size_t i = 0; i < max_size; ++i)
+    {
+        if (slots[i].isOccupied())
         {
-            slot.clear();
+            std::cout << "  Slot " << i << ": " << slots[i].getTrack()->get_title()
+                      << " (last access: " << slots[i].getLastAccessTime() << ")\n";
+        }
+        else
+        {
+            std::cout << "  Slot " << i << ": [EMPTY]\n";
         }
     }
+}
 
-    void LRUCache::displayStatus() const
+size_t LRUCache::findSlot(const std::string &track_id) const
+{
+    for (size_t i = 0; i < max_size; ++i)
     {
-        std::cout << "[LRUCache] Status: " << size() << "/" << max_size << " slots used\n";
-        for (size_t i = 0; i < max_size; ++i)
+        if (slots[i].isOccupied() && slots[i].getTrack()->get_title() == track_id)
+            return i;
+    }
+    return max_size;
+}
+
+/**
+ * TODO: Implement the findLRUSlot() method for LRUCache
+ */
+size_t LRUCache::findLRUSlot() const
+{
+    uint64_t min_val = UINT64_MAX; // Defining flag value in case all cells are empty.
+    size_t ret_index = max_size;
+    for (size_t i = 0; i < max_size; ++i) // iterating through uccupied slots to find the one with the minimum last_access value and return its' index. if no empty slots returning max_size
+    {
+        if (slots[i].isOccupied())
         {
-            if (slots[i].isOccupied())
+            if (min_val > slots[i].getLastAccessTime())
             {
-                std::cout << "  Slot " << i << ": " << slots[i].getTrack()->get_title()
-                          << " (last access: " << slots[i].getLastAccessTime() << ")\n";
-            }
-            else
-            {
-                std::cout << "  Slot " << i << ": [EMPTY]\n";
+                min_val = slots[i].getLastAccessTime();
+                ret_index = i;
             }
         }
     }
+    return ret_index;
+}
 
-    size_t LRUCache::findSlot(const std::string &track_id) const
+size_t LRUCache::findEmptySlot() const
+{
+    for (size_t i = 0; i < max_size; ++i)
     {
-        for (size_t i = 0; i < max_size; ++i)
-        {
-            if (slots[i].isOccupied() && slots[i].getTrack()->get_title() == track_id)
-                return i;
-        }
-        return max_size;
+        if (!slots[i].isOccupied())
+            return i;
     }
+    return max_size;
+}
 
-    /**
-     * TODO: Implement the findLRUSlot() method for LRUCache
-     */
-    size_t LRUCache::findLRUSlot() const
-    {
-        uint64_t min_val = UINT64_MAX; // Defining flag value in case all cells are empty.
-        size_t ret_index = max_size;
-        for (size_t i = 0; i < max_size; ++i)
-        {
-            if (slots[i].isOccupied())
-            {
-                if (min_val > slots[i].getLastAccessTime())
-                {
-                    min_val = slots[i].getLastAccessTime();
-                    ret_index = i;
-                }
-            }
-        }
-        return ret_index;
-    }
-
-    size_t LRUCache::findEmptySlot() const
-    {
-        for (size_t i = 0; i < max_size; ++i)
-        {
-            if (!slots[i].isOccupied())
-                return i;
-        }
-        return max_size;
-    }
-
-    void LRUCache::set_capacity(size_t capacity)
-    {
-        if (max_size == capacity)
-            return;
-        // udpate max size
-        max_size = capacity;
-        // update the slots vector
-        slots.resize(capacity);
-    }
+void LRUCache::set_capacity(size_t capacity)
+{
+    if (max_size == capacity)
+        return;
+    // udpate max size
+    max_size = capacity;
+    // update the slots vector
+    slots.resize(capacity);
+}

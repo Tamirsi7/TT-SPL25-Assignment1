@@ -75,8 +75,8 @@ bool DJSession::load_playlist(const std::string &playlist_name)
  */
 int DJSession::load_track_to_controller(const std::string &track_name)
 {
-    AudioTrack *loading_track = library_service.findTrack(track_name);
-    if (loading_track == nullptr)
+    AudioTrack *loading_track = library_service.findTrack(track_name); //find track in library
+    if (loading_track == nullptr)//checking if not found- if not found logging it and updating stats error
     {
         std::cout << "[ERROR] Track: '" << track_name << "' not found in library\n";
         stats.errors++;
@@ -84,6 +84,7 @@ int DJSession::load_track_to_controller(const std::string &track_name)
     }
     std::cout << "[System] Loading track '" << track_name << "' to controller...\n";
     int loading_status = controller_service.loadTrackToCache(*loading_track); //* on a pointer makes it a referance
+    //interpreting return value according to contract
     if (loading_status == 1)
     {
         stats.cache_hits++;
@@ -109,14 +110,14 @@ int DJSession::load_track_to_controller(const std::string &track_name)
 bool DJSession::load_track_to_mixer_deck(const std::string &track_title)
 {
     std::cout << "[System] Delegating track transfer to MixingEngineService for: " << track_title << std::endl;
-    AudioTrack *returned_track = controller_service.getTrackFromCache(track_title);
-    if (returned_track == nullptr)
+    AudioTrack *returned_track = controller_service.getTrackFromCache(track_title); //retrieving track from cache
+    if (returned_track == nullptr)//if not found - logging error and updating stats.errors
     {
         std::cout << "[ERROR] Track: '" << track_title << "' not found in cache\n";
         stats.errors++;
         return false;
     }
-    int load_to_track_status = mixing_service.loadTrackToDeck(*returned_track);
+    int load_to_track_status = mixing_service.loadTrackToDeck(*returned_track); //loading track to deck using the service
     if (load_to_track_status == 1)
     {
         stats.deck_loads_b++;
@@ -169,27 +170,28 @@ void DJSession::simulate_dj_performance()
     std::cout << "Cache Capacity: " << session_config.controller_cache_size << " slots (LRU policy)" << std::endl;
     std::cout << "\n--- Processing Tracks ---" << std::endl;
 
-    bool keep_running = true;
+    bool keep_running = true; //looping until played all or user enters ""
     while (keep_running)
     {
         std::vector<std::string> current_playlist;
-        if (play_all)
+        if (play_all)//if play all = true
         {
             for (const std::pair<const std::string, std::vector<int>> &pair : session_config.playlists)
             { // iterating through the map, using const to keep the original objects in map safe
                 current_playlist.push_back(pair.first);
             }
-            std::sort(current_playlist.begin(), current_playlist.end());
+            std::sort(current_playlist.begin(), current_playlist.end()); //sorting all playlist names from session config
         }
-        if (!play_all)
+        if (!play_all)//if we are in interactive mode:
         {
-            std::string playlist_from_user = display_playlist_menu_from_config();
-            if (playlist_from_user == "")
+            std::string playlist_from_user = display_playlist_menu_from_config();//calling display to get user selection
+            if (playlist_from_user == "")//if getting "" breaking loop
             {
                 break;
             }
             current_playlist.push_back(playlist_from_user);
         }
+        //setting all stats to 0
         stats.tracks_processed = 0;
         stats.cache_hits = 0;
         stats.cache_misses = 0;
@@ -198,9 +200,9 @@ void DJSession::simulate_dj_performance()
         stats.deck_loads_b = 0;
         stats.transitions = 0;
         stats.errors = 0;
-        for (size_t i = 0; i < current_playlist.size(); i++)
+        for (size_t i = 0; i < current_playlist.size(); i++) //for each playlist:
         {
-            bool load_status = load_playlist(current_playlist[i]);
+            bool load_status = load_playlist(current_playlist[i]);//trying to load playlist
             if (!load_status)
             { // lead_playlist() logs error if needed
                 continue;
