@@ -67,7 +67,7 @@ double WAVTrack::get_quality_score() const
 
 PointerWrapper<AudioTrack> WAVTrack::clone() const
 {
-    WAVTrack *clone_track = new WAVTrack(title, artists, duration_seconds, bpm, sample_rate, bit_depth);
+/*    WAVTrack *clone_track = new WAVTrack(title, artists, duration_seconds, bpm, sample_rate, bit_depth);
     delete[] clone_track->waveform_data;
     // deep copying waveform array:
     clone_track->waveform_size = waveform_size;
@@ -76,5 +76,6 @@ PointerWrapper<AudioTrack> WAVTrack::clone() const
     {
         clone_track->waveform_data[i] = waveform_data[i];
     }
-    return PointerWrapper<AudioTrack>(clone_track);
+        */
+    return PointerWrapper<AudioTrack>(new WAVTrack(*this));
 }

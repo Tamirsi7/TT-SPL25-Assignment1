@@ -63,7 +63,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
         delete decks[target_deck];
         decks[target_deck] = nullptr;
     }
-
+    
     cloned_track.get()->load();
     cloned_track.get()->analyze_beatgrid();
 
