@@ -38,13 +38,13 @@ MixingEngineService::~MixingEngineService()
  */
 int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
-    std::cout << "\n=== Loading Track to Deck === \n";
+    std::cout << "\n=== Loading Track to Deck ===\n";
     bool is_first_track = false;
     PointerWrapper<AudioTrack> cloned_track = track.clone();
 
     if (cloned_track.get() == nullptr)
     {
-        std::cout << "[ERROR] Track : " << track.get_title() << "failed to clone \n";
+        std::cout << "[ERROR] Track : " << track.get_title() << "failed to clone\n";
         return -1;
     }
 
@@ -77,7 +77,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 
     AudioTrack *raw_pointer = cloned_track.release();
     decks[target_deck] = raw_pointer;
-    std::cout << "[Load Complete] " << track.get_title() << " is now loaded on deck " << target_deck << "\n";
+    std::cout << "[Load Complete] '" << track.get_title() << "' is now loaded on deck " << target_deck << "\n";
 
     if (is_first_track == false)
     {
@@ -135,13 +135,11 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
  */
 void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack> &track) const
 {
-    if (decks[active_deck] == nullptr || track.get() == nullptr)
+    if (decks[active_deck] != nullptr && track.get() != nullptr)
     {
-        return;
-    }
     int original_BPM = track->get_bpm();
     int avg_bpm = (original_BPM + decks[active_deck]->get_bpm())/2;
     track->set_bpm(avg_bpm);
-
-    std::cout << "[Sync BPM] Syncing BPM from " << original_BPM << "to" << avg_bpm << "\n";
+    std::cout << "[Sync BPM] Syncing BPM from " << original_BPM << " to " << avg_bpm << "\n";
+    }
 }

@@ -33,7 +33,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo> 
             counter++;
         }
     }
-    std::cout << "[INFO] Track library built: " << counter << " tracks loaded \n";
+    std::cout << "[INFO] Track library built: " << counter << " tracks loaded\n";
 }
 
 // adding distructor
@@ -106,7 +106,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
         AudioTrack *raw_cloned_track = library[track_indices[i] - 1]->clone().release();
         if (raw_cloned_track == nullptr)
         {
-            std::cout << "[ERROR] Track: " << library[track_indices[i]]->get_title() << " failed to clone \n";
+            std::cout << "[ERROR] Track: " << library[track_indices[i]]->get_title() << " failed to clone\n";
             continue;
         }
         raw_cloned_track->load();
@@ -116,7 +116,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
 
      //   std::cout << "Added '" << raw_cloned_track->get_title() << "' to playlist '" << playlist.get_name() << "'\n";
     }
-    std::cout << "[INFO] Playlist loaded: " << playlist.get_name() << " (" << count << " tracks) \n";
+    std::cout << "[INFO] Playlist loaded: " << playlist.get_name() << " (" << count << " tracks)\n";
 }
 
 /**

@@ -8,7 +8,7 @@ MP3Track::MP3Track(const std::string &title, const std::vector<std::string> &art
     : AudioTrack(title, artists, duration, bpm), bitrate(bitrate), has_id3_tags(has_tags)
 {
 
-    std::cout << "MP3Track created: " << bitrate << " kbps" << std::endl;
+   // std::cout << "MP3Track created: " << bitrate << " kbps" << std::endl;
 }
 
 // ========== TODO: STUDENTS IMPLEMENT THESE VIRTUAL FUNCTIONS ==========
@@ -21,14 +21,14 @@ void MP3Track::load()
     // NOTE: Use exactly 2 spaces before the arrow (→) character
     if (has_id3_tags)
     {
-        std::cout << "  → Processing ID3 metadata (artist info, album art, etc.)... \n";
+        std::cout << "  → Processing ID3 metadata (artist info, album art, etc.)...\n";
     }
     else
     {
-        std::cout << "  → No ID3 tags found. \n";
+        std::cout << "  → No ID3 tags found.\n";
     }
-    std::cout << "Decoding MP3 frames...\n";
-    std::cout << "Load complete.\n";
+    std::cout << "  → Decoding MP3 frames...\n";
+    std::cout << "  → Load complete.\n";
 }
 
 void MP3Track::analyze_beatgrid()
