@@ -8,7 +8,7 @@ MP3Track::MP3Track(const std::string &title, const std::vector<std::string> &art
     : AudioTrack(title, artists, duration, bpm), bitrate(bitrate), has_id3_tags(has_tags)
 {
 
-   // std::cout << "MP3Track created: " << bitrate << " kbps" << std::endl;
+    std::cout << "MP3Track created: " << bitrate << " kbps" << std::endl;
 }
 
 // ========== TODO: STUDENTS IMPLEMENT THESE VIRTUAL FUNCTIONS ==========
