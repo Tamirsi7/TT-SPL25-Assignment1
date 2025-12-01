@@ -25,6 +25,12 @@ public:
     MixingEngineService(const MixingEngineService &) = delete;
     MixingEngineService &operator=(const MixingEngineService &) = delete;
 
+    // adding move , move assignment operatiors to implement rule of 5 properly:
+
+    MixingEngineService(MixingEngineService&& other) noexcept;
+
+    MixingEngineService& operator=(MixingEngineService&& other) noexcept;
+
     /** Contract: Load a track to the next deck per instant-transition policy
      * - @param track: reference to a cached track to be cloned for the mixer
      * - @return: index of the deck the track was loaded to (0 or 1), or -1 on failure.

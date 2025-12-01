@@ -24,6 +24,12 @@ public:
     DJLibraryService(const DJLibraryService &) = delete;
     DJLibraryService &operator=(const DJLibraryService &) = delete;
 
+    // adding move , move assignment operatiors to implement rule of 5 properly:
+
+    DJLibraryService(DJLibraryService&& other) noexcept;
+
+    DJLibraryService& operator=(DJLibraryService&& other) noexcept;
+
     /**
      * @brief Build the track library from parsed config data
      * @param library_tracks Vector of track info from config
