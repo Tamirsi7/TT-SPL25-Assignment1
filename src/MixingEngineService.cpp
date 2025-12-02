@@ -81,7 +81,7 @@ MixingEngineService &MixingEngineService::operator=(MixingEngineService &&other)
 int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
     std::cout << "\n=== Loading Track to Deck ===\n";
-    bool is_first_track = false;
+ //   bool is_first_track = false;
     PointerWrapper<AudioTrack> cloned_track = track.clone(); // cloning track polymorphically using and wrap in PointerWrapper for safety
 
     if (cloned_track.get() == nullptr) // if clone fails - logging an error and returning 1
@@ -94,8 +94,8 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 
     if (decks[0] == nullptr && decks[1] == nullptr)
     {
-        target_deck = 0;
-        is_first_track = true;
+        //    target_deck = 0;
+    //    is_first_track = true;
     }
     // logging deck switch
     std::cout << "[Deck Switch] Target deck: " << target_deck << "\n";
@@ -120,14 +120,14 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     AudioTrack *raw_pointer = cloned_track.release(); // releasing  pointer from PointerWrapper and assigning to deck[target]
     decks[target_deck] = raw_pointer;
     std::cout << "[Load Complete] '" << track.get_title() << "' is now loaded on deck " << target_deck << "\n";
-
-    if (is_first_track == false) // if its not the first track ->  log unload and delete track from decks[active deck]
-    {
-        std::cout << "[Unload] Unloading previous deck " << active_deck << " (" << decks[active_deck]->get_title() << ")" << "\n";
-        delete decks[active_deck];
-        decks[active_deck] = nullptr;
-    }
-    // switch active decks and log messege
+// applying fix
+    //     if (is_first_track == false) // if its not the first track ->  log unload and delete track from decks[active deck]
+    //     {
+    //         std::cout << "[Unload] Unloading previous deck " << active_deck << " (" << decks[active_deck]->get_title() << ")" << "\n";
+    //         delete decks[active_deck];
+    //         decks[active_deck] = nullptr;
+    //     }
+    //  switch active decks and log messege
     active_deck = target_deck;
     std::cout << "[Active Deck] Switched to deck " << target_deck << "\n";
     return target_deck;
