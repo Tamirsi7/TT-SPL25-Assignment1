@@ -49,7 +49,7 @@ bool DJSession::load_playlist(const std::string &playlist_name)
 
     track_titles = library_service.getTrackTitles();
     //
-    std:reverse(track_titles.begin(),track_titles.end());
+    std::reverse(track_titles.begin(),track_titles.end());
     //
     return true;
 }
